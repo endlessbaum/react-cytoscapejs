@@ -174,12 +174,10 @@ export const CytoscapeComponent = (props) => {
     };
   });
 
-  return (
-    <div
-      ref={ref}
-      id={props.id}
-      className={props.className}
-      style={props.style}
-    ></div>
-  );
+  return React.createElement('div', {
+    ref: this.containerRef,
+    id,
+    className,
+    style,
+  });
 };
