@@ -179,3 +179,5 @@ export const CytoscapeComponent = (props) => {
     ></div>
   );
 };
+
+export default CytoscapeComponent;
