@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 // import { types } from './types';
 import { defaults } from './defaults';
 import Cytoscape from 'cytoscape';
@@ -168,7 +168,7 @@ export const CytoscapeComponent = (props) => {
       _cy.current.destroy();
       _cy.current = null;
     };
-  }, [props]);
+  });
 
   return (
     <div
