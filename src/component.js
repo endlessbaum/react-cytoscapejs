@@ -111,16 +111,16 @@ import { patch } from './patch';
 export const CytoscapeComponent = (props) => {
   const ref = useRef(null);
   const prevProps = useRef(null);
-  const [innerCy, setInnerCy] = useState(null);
+  const _cy = useRef(null);
   const _props = { ...defaults, ...props };
 
   const updateCytoscape = (prevProps, newProps) => {
-    const cy = innerCy;
+    const cy = _cy.current;
     const { diff, toJson, get, forEach } = newProps;
 
     patch(cy, prevProps, newProps, diff, toJson, get, forEach);
 
-    setInnerCy(cy);
+    _cy.current = cy;
   };
 
   useEffect(() => {
@@ -152,11 +152,11 @@ export const CytoscapeComponent = (props) => {
         pixelRatio,
       });
 
-      setInnerCy(cy);
+      _cy.current = cy;
     }
 
-    if (window && global && !window[global] && innerCy) {
-      window[global] = innerCy;
+    if (window && global && !window[global] && _cy.current) {
+      window[global] = _cy.current;
     }
 
     updateCytoscape(prevProps.current, _props);
@@ -164,11 +164,11 @@ export const CytoscapeComponent = (props) => {
     prevProps.current = _props;
 
     return () => {
-      if (!innerCy) return;
-      innerCy.destroy();
-      setInnerCy(null);
+      if (!_cy.current) return;
+      _cy.current.destroy();
+      _cy.current = null;
     };
-  });
+  }, [props]);
 
   return (
     <div
