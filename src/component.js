@@ -108,7 +108,7 @@ import { patch } from './patch';
 //   }
 // }
 
-const CytoscapeComponent = (props) => {
+export const CytoscapeComponent = (props) => {
   const ref = useRef(null);
   const prevProps = useRef(null);
   const [innerCy, setInnerCy] = useState(null);
@@ -179,5 +179,3 @@ const CytoscapeComponent = (props) => {
     ></div>
   );
 };
-
-export default CytoscapeComponent;
