@@ -116,6 +116,7 @@ export default CytoscapeComponent = (props) => {
   const updateCytoscape = (prevProps, newProps) => {
     const cy = innerCy;
     const { diff, toJson, get, forEach } = newProps;
+    const _props = { ...defaults, ...props };
 
     patch(cy, prevProps, newProps, diff, toJson, get, forEach);
 
@@ -136,7 +137,7 @@ export default CytoscapeComponent = (props) => {
       motionBlurOpacity,
       wheelSensitivity,
       pixelRatio,
-    } = props;
+    } = _props;
 
     if (!innerCy) {
       const cy = new Cytoscape({
@@ -158,9 +159,9 @@ export default CytoscapeComponent = (props) => {
       window[global] = innerCy;
     }
 
-    updateCytoscape(prevProps.current, props);
+    updateCytoscape(prevProps.current, _props);
 
-    prevProps.current = props;
+    prevProps.current = _props;
 
     return () => {
       if (!innerCy) return;
@@ -178,5 +179,3 @@ export default CytoscapeComponent = (props) => {
     ></div>
   );
 };
-
-CytoscapeComponent.defaultProps = defaults;
