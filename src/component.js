@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 // import { types } from './types';
 import { defaults } from './defaults';
 import Cytoscape from 'cytoscape';
@@ -139,7 +139,7 @@ export const CytoscapeComponent = (props) => {
       pixelRatio,
     } = _props;
 
-    if (!innerCy) {
+    if (!_cy.current) {
       const cy = new Cytoscape({
         container,
         headless,
