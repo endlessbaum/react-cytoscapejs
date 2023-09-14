@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { types } from './types';
+import { useEffect, useRef, useState } from 'react';
+// import { types } from './types';
 import { defaults } from './defaults';
 import Cytoscape from 'cytoscape';
 import { patch } from './patch';
@@ -108,15 +108,15 @@ import { patch } from './patch';
 //   }
 // }
 
-export default CytoscapeComponent = (props) => {
+const CytoscapeComponent = (props) => {
   const ref = useRef(null);
   const prevProps = useRef(null);
   const [innerCy, setInnerCy] = useState(null);
+  const _props = { ...defaults, ...props };
 
   const updateCytoscape = (prevProps, newProps) => {
     const cy = innerCy;
     const { diff, toJson, get, forEach } = newProps;
-    const _props = { ...defaults, ...props };
 
     patch(cy, prevProps, newProps, diff, toJson, get, forEach);
 
@@ -179,3 +179,5 @@ export default CytoscapeComponent = (props) => {
     ></div>
   );
 };
+
+export default CytoscapeComponent;
