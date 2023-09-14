@@ -163,6 +163,10 @@ export const CytoscapeComponent = (props) => {
 
     prevProps.current = _props;
 
+    if (props.cy) {
+      props.cy(_cy.current);
+    }
+
     return () => {
       if (!_cy.current) return;
       _cy.current.destroy();
