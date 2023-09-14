@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { types } from './types';
 import { defaults } from './defaults';
 import Cytoscape from 'cytoscape';
@@ -107,3 +107,73 @@ export default class CytoscapeComponent extends React.Component {
     });
   }
 }
+
+
+export const CytoscapeComponentFC = (props) => {
+  const ref = useRef(null)
+  const prevProps = useRef(null);
+  const [innerCy, setInnerCy] = useState(null)
+
+  const updateCytoscape = (prevProps, newProps) =>{
+    const cy = innerCy;
+    const { diff, toJson, get, forEach } = newProps;
+
+    patch(cy, prevProps, newProps, diff, toJson, get, forEach);
+
+    setInnerCy(cy)
+
+  }
+  
+  useEffect(()=>{
+    if(!ref) return;
+    const container = ref.current;
+
+    const {
+      global,
+      headless,
+      styleEnabled,
+      hideEdgesOnViewport,
+      textureOnViewport,
+      motionBlur,
+      motionBlurOpacity,
+      wheelSensitivity,
+      pixelRatio,
+    } = props;
+
+    if (!innerCy) {
+    const cy = new Cytoscape({
+      container,
+      headless,
+      styleEnabled,
+      hideEdgesOnViewport,
+      textureOnViewport,
+      motionBlur,
+      motionBlurOpacity,
+      wheelSensitivity,
+        pixelRatio,
+      });
+
+      setInnerCy(cy)
+    }
+
+    if (window && global && !window[global] && innerCy) {
+      window[global] = innerCy;
+    }
+
+    updateCytoscape(prevProps.current, props)
+
+    prevProps.current = props
+
+    return ()=>{
+      if(!innerCy) return;
+      innerCy.destroy()
+      setInnerCy(null)
+    }
+  })
+
+
+  return <div ref={ref} id={props.id} className={props.className} style={props.style}></div>;
+}
+
+CytoscapeComponentFC.defaultProps = defaults
+
