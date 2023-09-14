@@ -163,8 +163,8 @@ export const CytoscapeComponent = (props) => {
 
     prevProps.current = _props;
 
-    if (props.cy) {
-      props.cy(_cy.current);
+    if (_props.cy) {
+      _props.cy(_cy.current);
     }
 
     return () => {
@@ -176,8 +176,8 @@ export const CytoscapeComponent = (props) => {
 
   return React.createElement('div', {
     ref,
-    id,
-    className,
-    style,
+    id: _props.id,
+    className: _props.className,
+    style: _props.style,
   });
 };
