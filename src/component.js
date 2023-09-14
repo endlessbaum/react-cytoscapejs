@@ -8,124 +8,122 @@ import { patch } from './patch';
  * The `CytoscapeComponent` is a React component that allows for the declarative creation
  * and modification of a Cytoscape instance, a graph visualisation.
  */
-export default class CytoscapeComponent extends React.Component {
-  static get propTypes() {
-    return types;
-  }
+// export default class CytoscapeComponent extends React.Component {
+//   static get propTypes() {
+//     return types;
+//   }
 
-  static get defaultProps() {
-    return defaults;
-  }
+//   static get defaultProps() {
+//     return defaults;
+//   }
 
-  static normalizeElements(elements) {
-    const isArray = elements.length != null;
+//   static normalizeElements(elements) {
+//     const isArray = elements.length != null;
 
-    if (isArray) {
-      return elements;
-    } else {
-      let { nodes, edges } = elements;
+//     if (isArray) {
+//       return elements;
+//     } else {
+//       let { nodes, edges } = elements;
 
-      if (nodes == null) {
-        nodes = [];
-      }
+//       if (nodes == null) {
+//         nodes = [];
+//       }
 
-      if (edges == null) {
-        edges = [];
-      }
+//       if (edges == null) {
+//         edges = [];
+//       }
 
-      return nodes.concat(edges);
-    }
-  }
+//       return nodes.concat(edges);
+//     }
+//   }
 
-  constructor(props) {
-    super(props);
-    this.displayName = 'CytoscapeComponent';
-    this.containerRef = React.createRef();
-  }
+//   constructor(props) {
+//     super(props);
+//     this.displayName = 'CytoscapeComponent';
+//     this.containerRef = React.createRef();
+//   }
 
-  componentDidMount() {
-    const container = this.containerRef.current;
+//   componentDidMount() {
+//     const container = this.containerRef.current;
 
-    const {
-      global,
-      headless,
-      styleEnabled,
-      hideEdgesOnViewport,
-      textureOnViewport,
-      motionBlur,
-      motionBlurOpacity,
-      wheelSensitivity,
-      pixelRatio,
-    } = this.props;
+//     const {
+//       global,
+//       headless,
+//       styleEnabled,
+//       hideEdgesOnViewport,
+//       textureOnViewport,
+//       motionBlur,
+//       motionBlurOpacity,
+//       wheelSensitivity,
+//       pixelRatio,
+//     } = this.props;
 
-    const cy = (this._cy = new Cytoscape({
-      container,
-      headless,
-      styleEnabled,
-      hideEdgesOnViewport,
-      textureOnViewport,
-      motionBlur,
-      motionBlurOpacity,
-      wheelSensitivity,
-      pixelRatio,
-    }));
+//     const cy = (this._cy = new Cytoscape({
+//       container,
+//       headless,
+//       styleEnabled,
+//       hideEdgesOnViewport,
+//       textureOnViewport,
+//       motionBlur,
+//       motionBlurOpacity,
+//       wheelSensitivity,
+//       pixelRatio,
+//     }));
 
-    if (global) {
-      window[global] = cy;
-    }
+//     if (global) {
+//       window[global] = cy;
+//     }
 
-    this.updateCytoscape(null, this.props);
-  }
+//     this.updateCytoscape(null, this.props);
+//   }
 
-  updateCytoscape(prevProps, newProps) {
-    const cy = this._cy;
-    const { diff, toJson, get, forEach } = newProps;
+//   updateCytoscape(prevProps, newProps) {
+//     const cy = this._cy;
+//     const { diff, toJson, get, forEach } = newProps;
 
-    patch(cy, prevProps, newProps, diff, toJson, get, forEach);
+//     patch(cy, prevProps, newProps, diff, toJson, get, forEach);
 
-    if (newProps.cy != null) {
-      newProps.cy(cy);
-    }
-  }
+//     if (newProps.cy != null) {
+//       newProps.cy(cy);
+//     }
+//   }
 
-  componentDidUpdate(prevProps) {
-    this.updateCytoscape(prevProps, this.props);
-  }
+//   componentDidUpdate(prevProps) {
+//     this.updateCytoscape(prevProps, this.props);
+//   }
 
-  componentWillUnmount() {
-    this._cy.destroy();
-  }
+//   componentWillUnmount() {
+//     this._cy.destroy();
+//   }
 
-  render() {
-    const { id, className, style } = this.props;
+//   render() {
+//     const { id, className, style } = this.props;
 
-    return React.createElement('div', {
-      ref: this.containerRef,
-      id,
-      className,
-      style,
-    });
-  }
-}
+//     return React.createElement('div', {
+//       ref: this.containerRef,
+//       id,
+//       className,
+//       style,
+//     });
+//   }
+// }
 
-
-export const CytoscapeComponentFC = (props) => {
-  const ref = useRef(null)
+export default CytoscapeComponent = (props) => {
+  const ref = useRef(null);
   const prevProps = useRef(null);
-  const [innerCy, setInnerCy] = useState(null)
+  const [innerCy, setInnerCy] = useState(null);
 
-  const updateCytoscape = (prevProps, newProps) =>{
+  const updateCytoscape = (prevProps, newProps) => {
     const cy = innerCy;
     const { diff, toJson, get, forEach } = newProps;
 
     patch(cy, prevProps, newProps, diff, toJson, get, forEach);
 
-    setInnerCy(cy)
+    setInnerCy(cy);
+  };
 
-  }
-  
-  useEffect(()=>{
-    if(!ref) return;
+  useEffect(() => {
+    if (!ref) return;
     const container = ref.current;
 
     const {
@@ -141,39 +139,44 @@ export const CytoscapeComponentFC = (props) => {
     } = props;
 
     if (!innerCy) {
-    const cy = new Cytoscape({
-      container,
-      headless,
-      styleEnabled,
-      hideEdgesOnViewport,
-      textureOnViewport,
-      motionBlur,
-      motionBlurOpacity,
-      wheelSensitivity,
+      const cy = new Cytoscape({
+        container,
+        headless,
+        styleEnabled,
+        hideEdgesOnViewport,
+        textureOnViewport,
+        motionBlur,
+        motionBlurOpacity,
+        wheelSensitivity,
         pixelRatio,
       });
 
-      setInnerCy(cy)
+      setInnerCy(cy);
     }
 
     if (window && global && !window[global] && innerCy) {
       window[global] = innerCy;
     }
 
-    updateCytoscape(prevProps.current, props)
+    updateCytoscape(prevProps.current, props);
 
-    prevProps.current = props
+    prevProps.current = props;
 
-    return ()=>{
-      if(!innerCy) return;
-      innerCy.destroy()
-      setInnerCy(null)
-    }
-  })
+    return () => {
+      if (!innerCy) return;
+      innerCy.destroy();
+      setInnerCy(null);
+    };
+  });
 
+  return (
+    <div
+      ref={ref}
+      id={props.id}
+      className={props.className}
+      style={props.style}
+    ></div>
+  );
+};
 
-  return <div ref={ref} id={props.id} className={props.className} style={props.style}></div>;
-}
-
-CytoscapeComponentFC.defaultProps = defaults
-
+CytoscapeComponentFC.defaultProps = defaults;
