@@ -169,12 +169,12 @@ const CytoscapeComponent = (props) => {
 
     prevProps.current = _props;
 
-    // return () => {
-    //   console.log('destroy');
-    //   if (!_cy.current) return;
-    //   _cy.current.destroy();
-    //   _cy.current = null;
-    // };
+    return () => {
+      console.log('destroy');
+      // if (!_cy.current) return;
+      // _cy.current.destroy();
+      // _cy.current = null;
+    };
   });
 
   return React.createElement('div', {
