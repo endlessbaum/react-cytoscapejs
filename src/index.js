@@ -1,2 +1,2 @@
-import { CytoscapeComponent } from './component';
+import CytoscapeComponent from './component';
 export default CytoscapeComponent;

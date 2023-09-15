@@ -108,7 +108,7 @@ import { patch } from './patch';
 //   }
 // }
 
-export const CytoscapeComponent = (props) => {
+const CytoscapeComponent = (props) => {
   const ref = useRef(null);
   const prevProps = useRef(null);
   const _cy = useRef(null);
@@ -118,14 +118,20 @@ export const CytoscapeComponent = (props) => {
     const cy = _cy.current;
     const { diff, toJson, get, forEach } = newProps;
 
+    console.log(cy);
+
     patch(cy, prevProps, newProps, diff, toJson, get, forEach);
 
-    _cy.current = cy;
+    if (_props.cy) {
+      _props.cy(_cy.current);
+    }
   };
 
   useEffect(() => {
-    if (!ref) return;
+    console.log('test');
+    if (!ref.current) return;
     const container = ref.current;
+    console.log(container);
 
     const {
       global,
@@ -163,15 +169,12 @@ export const CytoscapeComponent = (props) => {
 
     prevProps.current = _props;
 
-    if (_props.cy) {
-      _props.cy(_cy.current);
-    }
-
-    return () => {
-      if (!_cy.current) return;
-      _cy.current.destroy();
-      _cy.current = null;
-    };
+    // return () => {
+    //   console.log('destroy');
+    //   if (!_cy.current) return;
+    //   _cy.current.destroy();
+    //   _cy.current = null;
+    // };
   });
 
   return React.createElement('div', {
@@ -181,3 +184,4 @@ export const CytoscapeComponent = (props) => {
     style: _props.style,
   });
 };
+export default CytoscapeComponent;
